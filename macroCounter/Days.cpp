@@ -14,6 +14,12 @@ void Days::SetDate()
 	cin >> userInput;
 	dDate = userInput; //set date to user input
 }
+//set date for file i/o
+void Days::SetDateFile(string date)
+{
+	dDate = date;
+}
+
 //set total proteins in grams for the day
 void Days::SetPFCTotals(vector<Meal> mLog)
 {
@@ -24,6 +30,21 @@ void Days::SetPFCTotals(vector<Meal> mLog)
 		fatTotal = mLog[i].GetFats();
 	}
 }
+//set protein total, file i/o
+void Days::SetProteinTotal(int protein)
+{
+	proteinTotal = protein;
+}
+//set carb total, file i/o
+void Days::SetCarbTotal(int carb)
+{
+	carbTotal = carb;
+}
+//set fat total, file i/o
+void Days::SetFatTotal(int fat)
+{
+	fatTotal = fat;
+}
 //set cals for each nutrient and total
 void Days::SetCals()
 {
@@ -32,7 +53,12 @@ void Days::SetCals()
 	fatCals = fatTotal * 9; //cals per fat is 9
 	totalCals = proteinCals + carbCals + fatCals; //add all cals up to get total macro cals
 }
-
+//set cals total only, file i/o
+void Days::SetCalsTotal(int cals)
+{
+	totalCals = cals;
+}
+//get day date
 string Days::GetDate()
 {
 	return dDate;

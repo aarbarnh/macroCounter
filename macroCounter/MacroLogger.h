@@ -12,11 +12,13 @@ public:
 	void SetDayProGoal(int protein);
 	void SetDayCarbGoal(int carb);
 	void SetDayFatGoal(int fat);
-	void SetMealProGoal();
-	void SetMealCarbGoal();
-	void SetMealFatGoal();
-	void SaveMealsFile(Meal meal);
-	void SaveDaysFile(Days day);
+	void SetMealProGoal(int meals);
+	void SetMealCarbGoal(int meals);
+	void SetMealFatGoal(int meals);
+	void SaveMealsFile(string file); //save vector meal to file
+	void SaveDaysFile(string file); //save vector days to file
+	void ReadMealsFile(string file); //read from file to fill vector meal
+	void ReadDaysFile(string file); //read from file to fill vector days
 	vector<Meal> GetMeals();
 	vector<Days> GetDays();
 	~MacroLogger();

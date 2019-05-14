@@ -12,8 +12,13 @@ public:
 	Days();
 	//getter/setters 
 	void SetDate();
+	void SetDateFile(string date);
 	void SetPFCTotals(vector<Meal> mLog);
+	void SetProteinTotal(int protein);
+	void SetCarbTotal(int carb);
+	void SetFatTotal(int fat);
 	void SetCals();
+	void SetCalsTotal(int cals);
 	string GetDate();
 	int GetProteinTotal();
 	int GetCarbTotal();

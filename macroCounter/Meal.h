@@ -8,6 +8,7 @@ class Meal :
 public:
 	Meal();
 	void SetMeal();
+	void SetMealNumFile(int num);
 	int GetMealNum();
 	~Meal();
 private:
