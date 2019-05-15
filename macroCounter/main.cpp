@@ -13,11 +13,10 @@ int main()
 {
 	system("color 17");
 	bool programOn = true; //keeps user inside of program, exit if false
+	MacroLogger logger; //logger obj to hold goals and vectors
 	while (programOn == true)
 	{
 		StartScreen(&programOn);
-		Days dayT;
-		dayT.SetDate();
 	}
 
 	system("pause");

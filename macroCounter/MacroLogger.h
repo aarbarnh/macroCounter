@@ -19,6 +19,10 @@ public:
 	void SaveDaysFile(string file); //save vector days to file
 	void ReadMealsFile(string file); //read from file to fill vector meal
 	void ReadDaysFile(string file); //read from file to fill vector days
+	void SaveMealGoals(string file); //save meal goals for p,f,c
+	void SaveDayGoals(string file); //save day goals for p,f,c
+	void ReadMealGoals(string file); //read from file to set goals (meals)
+	void ReadDayGoals(string file); //read from file to set goals (days)
 	vector<Meal> GetMeals();
 	vector<Days> GetDays();
 	~MacroLogger();
