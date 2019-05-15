@@ -7,13 +7,19 @@
 
 using namespace std; 
 
+//prototype functions
 void StartScreen(bool *ptrBool);
+void SetGoals(); //set day/meal goals into logger, then ask to save
+void LogMeal(); //push meal to log (save)
+void ShowMealLog(); //show meals in log
+
+//global variables/objs
+MacroLogger logger; //logger obj to hold goals and vectors
 
 int main()
 {
 	system("color 17");
 	bool programOn = true; //keeps user inside of program, exit if false
-	MacroLogger logger; //logger obj to hold goals and vectors
 	while (programOn == true)
 	{
 		StartScreen(&programOn);
@@ -82,4 +88,9 @@ void StartScreen(bool *ptrBool) //description and title, also menu options
 	}
 	system("pause");
 	system("cls");
+}
+
+void SetGoals() //set goals definition
+{
+
 }
