@@ -6,32 +6,32 @@ MacroLogger::MacroLogger()
 {
 }
 
-void MacroLogger::SetDayProGoal(int protein)
+void MacroLogger::SetDayProGoal(float protein)
 {
 	goalDayProtein = protein;
 }
 
-void MacroLogger::SetDayCarbGoal(int carb)
+void MacroLogger::SetDayCarbGoal(float carb)
 {
 	goalDayCarbs = carb;
 }
 
-void MacroLogger::SetDayFatGoal(int fat)
+void MacroLogger::SetDayFatGoal(float fat)
 {
 	goalDayFats = fat;
 }
 
-void MacroLogger::SetMealProGoal(int meals)
+void MacroLogger::SetMealProGoal(float meals)
 {
 	goalMealProtein = goalDayProtein / meals;
 }
 
-void MacroLogger::SetMealCarbGoal(int meals)
+void MacroLogger::SetMealCarbGoal(float meals)
 {
 	goalMealCarbs = goalDayCarbs / meals;
 }
 
-void MacroLogger::SetMealFatGoal(int meals)
+void MacroLogger::SetMealFatGoal(float meals)
 {
 	goalMealFats = goalDayFats / meals;
 }
@@ -53,7 +53,7 @@ void MacroLogger::SaveMealsFile(string file)
 	outFile.close();
 }
 
-void MacroLogger::SaveMealGoals(string file)
+void MacroLogger::SaveGoals(string file)
 {
 	ofstream outFile(file);
 	if (outFile.is_open())
@@ -61,15 +61,6 @@ void MacroLogger::SaveMealGoals(string file)
 		outFile << goalMealProtein << "\n";
 		outFile << goalMealFats << "\n";
 		outFile << goalMealCarbs << "\n";
-	}
-	outFile.close();
-}
-
-void MacroLogger::SaveDayGoals(string file)
-{
-	ofstream outFile(file);
-	if (outFile.is_open())
-	{//write in the goals for days
 		outFile << goalDayProtein << "\n";
 		outFile << goalDayFats << "\n";
 		outFile << goalDayCarbs << "\n";
@@ -94,49 +85,38 @@ void MacroLogger::SaveDaysFile(string file)
 	outFile.close();
 }
 
-void MacroLogger::ReadMealGoals(string file)
+void MacroLogger::ReadGoals(string file)
 {
 	string inString;
-	int inInt;
+	float inFloat; //testing purpose
 
 	ifstream inFile(file);
 	if (inFile.is_open())
 	{
 		getline(inFile, inString); //get meal goal proteins
-		inInt = stoi(inString); //convert
-		goalMealProtein = inInt; //set meal proteins
+		inFloat = stof(inString); //convert
+		goalMealProtein = inFloat; //set meal proteins
 
 		getline(inFile, inString); //get meal goal fats
-		inInt = stoi(inString); //convert
-		goalMealFats = inInt; //set
+		inFloat = stof(inString); //convert
+		goalMealFats = inFloat; //set
 
 		getline(inFile, inString); //get meal goal carbs
-		inInt = stoi(inString); //convert
-		goalMealCarbs = inInt; //set
+		inFloat = stof(inString); //convert
+		goalMealCarbs = inFloat; //set
 
-	}
-	inFile.close();
-}
+		getline(inFile, inString); //get day goal proteins
+		inFloat = stof(inString); //convert
+		goalDayProtein = inFloat; //set meal proteins
 
-void MacroLogger::ReadDayGoals(string file)
-{
-	string inString;
-	int inInt;
+		getline(inFile, inString); //get day goal fats
+		inFloat = stof(inString); //convert
+		goalDayFats = inFloat; //set
 
-	ifstream inFile(file);
-	if (inFile.is_open())
-	{
-		getline(inFile, inString); //get meal goal proteins
-		inInt = stoi(inString); //convert
-		goalDayProtein = inInt; //set meal proteins
+		getline(inFile, inString); //get day goal carbs
+		inFloat = stof(inString); //convert
+		goalDayCarbs = inFloat; //set
 
-		getline(inFile, inString); //get meal goal fats
-		inInt = stoi(inString); //convert
-		goalDayFats = inInt; //set
-
-		getline(inFile, inString); //get meal goal carbs
-		inInt = stoi(inString); //convert
-		goalDayCarbs = inInt; //set
 
 	}
 	inFile.close();
@@ -145,7 +125,8 @@ void MacroLogger::ReadDayGoals(string file)
 void MacroLogger::ReadMealsFile(string file)
 {
 	string inString;
-	int inInt;
+	float inFloat;
+	int inInt; //for meal num only
 
 	ifstream inFile(file);
 	if (inFile.is_open())
@@ -154,24 +135,24 @@ void MacroLogger::ReadMealsFile(string file)
 		{
 			Meal tempMeal; //temp obj
 			getline(inFile, inString); //get meal num
-			inInt = stoi(inString); //change string to int
+			inInt = stof(inString); //change string to int
 			tempMeal.SetMealNumFile(inInt); //set meal num to inInt
 
 			getline(inFile, inString); //get protein grams
-			inInt = stoi(inString); //change proteins
-			tempMeal.SetProteins(inInt); //set proteins
+			inFloat = stof(inString); //change proteins
+			tempMeal.SetProteins(inFloat); //set proteins
 
 			getline(inFile, inString); //get fats grams
-			inInt = stoi(inString); //change fats
-			tempMeal.SetFats(inInt); //set fats
+			inFloat = stof(inString); //change fats
+			tempMeal.SetFats(inFloat); //set fats
 
 			getline(inFile, inString); //get carbs grams
-			inInt = stoi(inString); //change carbs
-			tempMeal.SetCarbs(inInt); //set carbs
+			inFloat = stof(inString); //change carbs
+			tempMeal.SetCarbs(inFloat); //set carbs
 
 			getline(inFile, inString); //get meal cals
-			inInt = stoi(inString); //change cals
-			tempMeal.SetMealCalsFile(inInt); //set cals
+			inFloat = stof(inString); //change cals
+			tempMeal.SetMealCalsFile(inFloat); //set cals
 
 			mealLog.push_back(tempMeal); //push meal to log
 		}
@@ -183,7 +164,7 @@ void MacroLogger::ReadMealsFile(string file)
 void MacroLogger::ReadDaysFile(string file)
 {
 	string inString;
-	int inInt;
+	float inFloat;
 
 	ifstream inFile(file);
 	if (inFile.is_open())
@@ -195,20 +176,20 @@ void MacroLogger::ReadDaysFile(string file)
 			tempDay.SetDateFile(inString); //set day date 
 
 			getline(inFile, inString); //get protein grams
-			inInt = stoi(inString); //change proteins
-			tempDay.SetProteinTotal(inInt); //set protein total for day
+			inFloat = stof(inString); //change proteins
+			tempDay.SetProteinTotal(inFloat); //set protein total for day
 
 			getline(inFile, inString); //get fats grams
-			inInt = stoi(inString); //change fats
-			tempDay.SetFatTotal(inInt); //set fats
+			inFloat = stof(inString); //change fats
+			tempDay.SetFatTotal(inFloat); //set fats
 
 			getline(inFile, inString); //get carbs grams
-			inInt = stoi(inString); //change carbs
-			tempDay.SetCarbTotal(inInt); //set carbs
+			inFloat = stof(inString); //change carbs
+			tempDay.SetCarbTotal(inFloat); //set carbs
 
 			getline(inFile, inString); //get meal cals
-			inInt = stoi(inString); //change cals
-			tempDay.SetCalsTotal(inInt); //set cals
+			inFloat = stof(inString); //change cals
+			tempDay.SetCalsTotal(inFloat); //set cals
 
 			dayLog.push_back(tempDay); //push meal to log
 		}

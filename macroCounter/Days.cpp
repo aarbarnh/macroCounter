@@ -31,17 +31,17 @@ void Days::SetPFCTotals(vector<Meal> mLog)
 	}
 }
 //set protein total, file i/o
-void Days::SetProteinTotal(int protein)
+void Days::SetProteinTotal(float protein)
 {
 	proteinTotal = protein;
 }
 //set carb total, file i/o
-void Days::SetCarbTotal(int carb)
+void Days::SetCarbTotal(float carb)
 {
 	carbTotal = carb;
 }
 //set fat total, file i/o
-void Days::SetFatTotal(int fat)
+void Days::SetFatTotal(float fat)
 {
 	fatTotal = fat;
 }
@@ -54,7 +54,7 @@ void Days::SetCals()
 	totalCals = proteinCals + carbCals + fatCals; //add all cals up to get total macro cals
 }
 //set cals total only, file i/o
-void Days::SetCalsTotal(int cals)
+void Days::SetCalsTotal(float cals)
 {
 	totalCals = cals;
 }
@@ -64,37 +64,37 @@ string Days::GetDate()
 	return dDate;
 }
 
-int Days::GetProteinTotal()
+float Days::GetProteinTotal()
 {
 	return proteinTotal;
 }
 
-int Days::GetCarbTotal()
+float Days::GetCarbTotal()
 {
 	return carbTotal;
 }
 
-int Days::GetFatTotal()
+float Days::GetFatTotal()
 {
 	return fatTotal;
 }
 
-int Days::GetProteinCals()
+float Days::GetProteinCals()
 {
 	return proteinCals;
 }
 
-int Days::GetCarbCals()
+float Days::GetCarbCals()
 {
 	return carbCals;
 }
 
-int Days::GetFatCals()
+float Days::GetFatCals()
 {
 	return fatCals;
 }
 
-int Days::GetTotalCals()
+float Days::GetTotalCals()
 {
 	return totalCals;
 }

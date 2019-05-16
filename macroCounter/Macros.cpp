@@ -4,51 +4,51 @@ Macros::Macros()
 {
 }
 
-void Macros::SetProteins(int grams)
+void Macros::SetProteins(float grams)
 {
 	proteins = grams;
 }
 
-void Macros::SetCarbs(int grams)
+void Macros::SetCarbs(float grams)
 {
 	carbs = grams;
 }
 
-void Macros::SetFats(int grams)
+void Macros::SetFats(float grams)
 {
 	fats = grams;
 }
 
 void Macros::SetMealCals()
 {
-	int proCals = proteins * 4;
-	int carbCals = carbs * 4;
-	int fatCals = fats * 9;
+	float proCals = proteins * 4;
+	float carbCals = carbs * 4;
+	float fatCals = fats * 9;
 
 	mealCals = proCals + carbCals + fatCals;
 }
 
-void Macros::SetMealCalsFile(int cals)
+void Macros::SetMealCalsFile(float cals)
 {
 	mealCals = cals;
 }
 
-int Macros::GetMealCals()
+float Macros::GetMealCals()
 {
 	return mealCals;
 }
 
-int Macros::GetProteins()
+float Macros::GetProteins()
 {
 	return proteins;
 }
 
-int Macros::GetCarbs()
+float Macros::GetCarbs()
 {
 	return carbs;
 }
 
-int Macros::GetFats()
+float Macros::GetFats()
 {
 	return fats;
 }

@@ -10,20 +10,20 @@ public:
 	Macros();
 	~Macros();
 	//getters/setters
-	void SetProteins(int grams);
-	void SetCarbs(int grams);
-	void SetFats(int grams);
+	void SetProteins(float grams);
+	void SetCarbs(float grams);
+	void SetFats(float grams);
 	void SetMealCals();
-	void SetMealCalsFile(int cals);
-	int GetMealCals();
-	int GetProteins();
-	int GetCarbs();
-	int GetFats();
+	void SetMealCalsFile(float cals);
+	float GetMealCals();
+	float GetProteins();
+	float GetCarbs();
+	float GetFats();
 protected:
-	int proteins;
-	int carbs;
-	int fats;
-	int mealCals;
+	float proteins;
+	float carbs;
+	float fats;
+	float mealCals;
 
 };
 
