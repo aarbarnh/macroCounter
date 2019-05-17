@@ -36,6 +36,16 @@ void MacroLogger::SetMealFatGoal(float meals)
 	goalMealFats = goalDayFats / meals;
 }
 
+void MacroLogger::PushBackMeal(Meal meal)
+{
+	mealLog.push_back(meal);
+}
+
+void MacroLogger::PushBackDays(Days day)
+{
+	dayLog.push_back(day);
+}
+
 void MacroLogger::SaveMealsFile(string file)
 {
 	ofstream outFile(file, ios::app); //append to file, not write over

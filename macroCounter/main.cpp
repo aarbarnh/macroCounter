@@ -10,9 +10,10 @@ using namespace std;
 //prototype functions
 void StartScreen();
 bool SetGoals(); //set day/meal goals into logger, then ask to save
-void LogMeal(); //push meal to log (save)
-void ShowMealLog(); //show meals in log
-void ShowDayLog(); //show days in log
+bool LogMeal(); //push meal to log (save)
+bool ShowMealLog(); //show meals in log
+bool ShowDayLog(); //show days in log
+bool QuitVerif(); //quitting or back to main menu
 
 //global variables/objs
 MacroLogger logger; //logger obj to hold goals and vectors
@@ -23,6 +24,10 @@ int main()
 	system("color 17");
 	while (programOn == true)
 	{
+		//load all data in before the start of the program
+		logger.ReadDaysFile("days.txt");
+		logger.ReadMealsFile("meals.txt");
+		logger.ReadGoals("macroGoals.txt");
 		StartScreen();
 	}
 
@@ -32,7 +37,12 @@ int main()
 
 void StartScreen() //description and title, also menu options
 {
-	cout << R"(
+	bool mainMenu = true;
+	while (mainMenu)
+	{
+		try
+		{
+			cout << R"(
   __  __                        _______             _             
  |  \/  |                      |__   __|           | |            
  | \  / | __ _  ___ _ __ ___      | |_ __ __ _  ___| | _____ _ __ 
@@ -42,16 +52,10 @@ void StartScreen() //description and title, also menu options
                                                                   
                                                                   
 )"; //put title
-
-	bool mainMenu = true;
-	while (mainMenu)
-	{
-		try
-		{
 			string menuString;
 			int menuInt;
 			cout << "1. Set Daily Macro Goals\n2. Log Meal Macros\n3. Log Daily Macros\n4. Show logged meals\n5. Show logged daily macros\n6. Quit\n\nWhat would you like to do? (Enter the number shown in the menu): ";
-			getline(cin, menuString);
+			cin >> menuString;
 			menuInt = stoi(menuString); //test if string is an int, catch exception
 			if (menuInt < 1 || menuInt > 6) //catch out of range menu number
 			{
@@ -61,8 +65,10 @@ void StartScreen() //description and title, also menu options
 			{
 			case 1: //set macro goals (P,F,C for each day)
 				mainMenu = SetGoals(); //make programOn false in function, mainMenu assigned with return
+				system("cls");
 				break;
 			case 2: //log meal
+				mainMenu = LogMeal(); //return bool for main, log meal to vector then save to file
 				break;
 			case 3: //log daily
 				//mainMenu = false; make function bool, still need to affect mainMenu bool
@@ -90,12 +96,41 @@ void StartScreen() //description and title, also menu options
 	system("cls");
 }
 
+bool QuitVerif()
+{
+	bool quitProgramVerif = false;
+	while (quitProgramVerif == false) //loop to quit program or just go back to menu
+	{
+		char userValidate;
+
+		cout << "Would you like to exit the program? If you do enter 'y'. If you do not, and just want to return to the main menu, enter 'n'.\nChoice: ";
+		cin >> userValidate; //get y/n for quitting
+		if (userValidate == 'y' || userValidate == 'Y')
+		{
+			cout << "\nThank you for using the Macro Tracker!\n\nExiting the program...\n"; //goodbye message
+			quitProgramVerif = true; //exit loop
+			programOn = false; //exit program
+			return false; //exit main menu
+		}
+		else if (userValidate == 'n' || userValidate == 'Y')
+		{
+			cout << "\nTaking you back to the main menu...\n"; //return message
+			quitProgramVerif = true; //exit loop
+			return true; //keep in main menu
+		}
+		else
+		{
+			cout << "\nYou can only enter 'y' to exit the entire program or 'n' to go back to the main menu. Please try again.\n\n";
+		}
+	}
+}
+
 bool SetGoals() //set goals definition
 {
 	//loop control variables
 	bool setBeforeVerif = false;
 	bool makeNewVerif = false;
-	bool quitProgramVerif = false;
+	bool returnBool = false; //send back to main menu
 	
 	char userValidate; //char to hold y/n for all four questions
 	string userInput; //string to hold p,f,c grams; test with stoi
@@ -190,26 +225,79 @@ bool SetGoals() //set goals definition
 			cout << "\nYou can only enter 'y' or 'n'. Remember 'y' means that you have made macro goals before, 'n' means that you have not.\n\n";
 		}
 	}
-	while (quitProgramVerif == false) //loop to quit program or just go back to menu
+	returnBool = QuitVerif();
+	return returnBool;
+}
+
+bool LogMeal()
+{
+	//variables for logging, string is for stoi/stof
+	string userInput;
+	int mealNum;
+	float macroEntry;
+	Meal tempMeal;
+
+	//bools for control
+	bool proteinValid = false;
+	bool carbValid = false;
+	bool fatValid = false;
+	bool returnBool = false;
+
+	//set meal num
+	tempMeal.SetMeal();
+
+	//get meal proteins
+	while (proteinValid == false)
 	{
-		cout << "Would you like to exit the program? If you do enter 'y'. If you do not, and just want to return to the main menu, enter 'n'.\nChoice: ";
-		cin >> userValidate; //get y/n for quitting
-		if (userValidate == 'y' || userValidate == 'Y')
+		try
 		{
-			cout << "\nThank you for using the Macro Tracker!\n\nExiting the program...\n"; //goodbye message
-			quitProgramVerif = true; //exit loop
-			programOn = false; //exit program
-			return false; //exit main menu
+			cout << "\nHow many grams of protein was in your meal?: ";
+			cin >> userInput;
+			macroEntry = stof(userInput);
+			tempMeal.SetProteins(macroEntry);
+			proteinValid = true;
 		}
-		else if (userValidate == 'n' || userValidate == 'Y')
+		catch (exception & e)
 		{
-			cout << "\nGood job setting and saving your macro goals!\n\nTaking you back to the main menu...\n"; //return message
-			quitProgramVerif = true; //exit loop
-			return true; //keep in main menu
-		}
-		else
-		{
-			cout << "\nYou can only enter 'y' to exit the entire program or 'n' to go back to the main menu. Please try again.\n\n";
+			cout << "\n\nException occured: " << e.what() << "\n\n";
 		}
 	}
+	//get meal fats
+	while (fatValid == false)
+	{
+		try
+		{
+			cout << "\nHow many grams of fat was in your meal?: ";
+			cin >> userInput;
+			macroEntry = stof(userInput);
+			tempMeal.SetFats(macroEntry);
+			fatValid = true;
+		}
+		catch (exception & e)
+		{
+			cout << "\n\nException occured: " << e.what() << "\n\n";
+		}
+	}
+	//get meal carbs
+	while (carbValid == false)
+	{
+		try
+		{
+			cout << "\nHow many grams of carbohydrates was in your meal?: ";
+			cin >> userInput;
+			macroEntry = stof(userInput);
+			tempMeal.SetCarbs(macroEntry);
+			carbValid = true;
+		}
+		catch (exception & e)
+		{
+			cout << "\n\nException occured: " << e.what() << "\n\n";
+		}
+	}
+	tempMeal.SetMealCals(); //set cals
+	logger.PushBackMeal(tempMeal);
+	logger.SaveMealsFile("meals.txt");
+
+	returnBool = QuitVerif();
+	return returnBool;
 }

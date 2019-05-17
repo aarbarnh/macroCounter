@@ -9,10 +9,24 @@ Meal::Meal()
 
 void Meal::SetMeal()
 {
-	int userInput; //continue messing with regex later, for now follow format
-	cout << "What meal of the day is this for you? (Enter a number): ";
-	cin >> userInput;
-	mealNum = userInput; //set date to user input
+	string userInput;
+	int mNum;
+	bool mealNumValid = false;
+	while (mealNumValid == false) //get meal num
+	{
+		try
+		{
+			cout << "\nWhich meal number is this for the day?: ";
+			cin >> userInput;
+			mNum = stoi(userInput);
+			mealNumValid = true;
+		}
+		catch (exception & e)
+		{
+			cout << "\nException occured: " << e.what() << "\n\n";
+		}
+	}
+	mealNum = mNum;
 }
 
 void Meal::SetMealNumFile(int num)
