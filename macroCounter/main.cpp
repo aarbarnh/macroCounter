@@ -55,7 +55,7 @@ void StartScreen() //description and title, also menu options
 )"; //put title
 			string menuString;
 			int menuInt;
-			cout << "1. Set Daily Macro Goals\n2. Log Meal Macros\n3. Log Daily Macros\n4. Show logged meals\n5. Show logged daily macros\n6. Quit\n\nWhat would you like to do? (Enter the number shown in the menu): ";
+			cout << "1. Set Daily Macro Goals\n2. Log Meal Macros\n3. Log Daily Macros\n4. Show logged meals macros\n5. Show logged daily macros\n6. Quit\n\nWhat would you like to do? (Enter the number shown in the menu): ";
 			cin >> menuString;
 			menuInt = stoi(menuString); //test if string is an int, catch exception
 			if (menuInt < 1 || menuInt > 6) //catch out of range menu number
@@ -72,7 +72,7 @@ void StartScreen() //description and title, also menu options
 				mainMenu = LogMeal(); //return bool for main, log meal to vector then save to file
 				break;
 			case 3: //log daily
-				//mainMenu = LogDaily(); //return bool to main
+				mainMenu = LogDaily(); //return bool to main
 				break;
 			case 4: //see meals
 				mainMenu = ShowMealLog(); //show meals in vector
@@ -306,8 +306,42 @@ bool LogMeal()
 
 bool LogDaily()
 {
-	return false; //stand in so no errors
-} //todo:implement later, doing shows first
+	Days tempDay;
+	char logDayVerif;
+	bool logValid = false;
+	bool returnBool = false;
+
+	while (logValid == false)
+	{
+		cout << "\nDo you want to log your daily macros? This will add up the macros of all the meals you've logged so far and combine them into a day total.\nEnter 'y' for yes or 'n' for no: ";
+		cin >> logDayVerif;
+		if (logDayVerif == 'Y' || logDayVerif == 'y')
+		{
+			cout << "\n\nLogging your daily macros...\n\n";
+			tempDay.SetDate(); //set the date of the day being logged
+			tempDay.SetPFCTotals(logger.GetMeals()); //get p f and c for day, passing in logger vector
+			tempDay.SetCals(); //set cals for the day
+			logger.PushBackDays(tempDay); //push to days vector in logger
+			logger.SaveDaysFile("days.txt"); //save the days to file
+			cout << "Daily macros logged successfully!\n\n";
+			returnBool = QuitVerif();
+			logValid = true;
+			return returnBool; //stay in main menu or not
+		}
+		else if (logDayVerif == 'N' || logDayVerif == 'n')
+		{
+			cout << "\n\nYour daily macros will not be logged yet\n\n";
+			returnBool = QuitVerif();
+			logValid = true;
+			return returnBool;
+		}
+		else
+		{
+			cout << "\n\nYou can only enter 'y' or 'n'. Please try again.\n";
+		}
+	}
+
+} //taking meals, totaling, set to day vector then save to file
 
 bool ShowMealLog()
 {
