@@ -49,7 +49,7 @@ void MacroLogger::PushBackDays(Days day)
 
 void MacroLogger::SaveMealsFile(string file)
 {
-	ofstream outFile(file, ios::app); //append to file, not write over
+	ofstream outFile(file); //append to file, not write over
 	if (outFile.is_open())
 	{
 		for (int i = 0; i < mealLog.size(); i++)
@@ -81,7 +81,7 @@ void MacroLogger::SaveGoals(string file)
 
 void MacroLogger::SaveDaysFile(string file)
 {
-	ofstream outFile(file, ios::app); //append to file not write over
+	ofstream outFile(file); //append to file not write over
 	if (outFile.is_open())
 	{
 		for (int i = 0; i < dayLog.size(); i++)
