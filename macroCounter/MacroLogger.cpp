@@ -1,5 +1,6 @@
 #include "MacroLogger.h"
 #include <fstream>
+#include <iostream>
 
 
 MacroLogger::MacroLogger()
@@ -103,27 +104,27 @@ void MacroLogger::ReadGoals(string file)
 	ifstream inFile(file);
 	if (inFile.is_open())
 	{
-		getline(inFile, inString); //get meal goal proteins
+		inFile >> inString; //get meal goal proteins
 		inFloat = stof(inString); //convert
 		goalMealProtein = inFloat; //set meal proteins
 
-		getline(inFile, inString); //get meal goal fats
+		inFile >> inString; //get meal goal fats
 		inFloat = stof(inString); //convert
 		goalMealFats = inFloat; //set
 
-		getline(inFile, inString); //get meal goal carbs
+		inFile >> inString; //get meal goal carbs
 		inFloat = stof(inString); //convert
 		goalMealCarbs = inFloat; //set
 
-		getline(inFile, inString); //get day goal proteins
+		inFile >> inString; //get day goal proteins
 		inFloat = stof(inString); //convert
 		goalDayProtein = inFloat; //set meal proteins
 
-		getline(inFile, inString); //get day goal fats
+		inFile >> inString; //get day goal fats
 		inFloat = stof(inString); //convert
 		goalDayFats = inFloat; //set
 
-		getline(inFile, inString); //get day goal carbs
+		inFile >> inString; //get day goal carbs
 		inFloat = stof(inString); //convert
 		goalDayCarbs = inFloat; //set
 
@@ -144,23 +145,23 @@ void MacroLogger::ReadMealsFile(string file)
 		while (!inFile.eof())
 		{
 			Meal tempMeal; //temp obj
-			getline(inFile, inString); //get meal num
-			inInt = stof(inString); //change string to int
+			inFile >> inString; //get meal num
+			inInt = stoi(inString); //change string to int
 			tempMeal.SetMealNumFile(inInt); //set meal num to inInt
 
-			getline(inFile, inString); //get protein grams
+			inFile >> inString; //get protein grams
 			inFloat = stof(inString); //change proteins
 			tempMeal.SetProteins(inFloat); //set proteins
 
-			getline(inFile, inString); //get fats grams
+			inFile >> inString; //get fats grams
 			inFloat = stof(inString); //change fats
 			tempMeal.SetFats(inFloat); //set fats
 
-			getline(inFile, inString); //get carbs grams
+			inFile >> inString; //get carbs grams
 			inFloat = stof(inString); //change carbs
 			tempMeal.SetCarbs(inFloat); //set carbs
 
-			getline(inFile, inString); //get meal cals
+			inFile >> inString; //get meal cals
 			inFloat = stof(inString); //change cals
 			tempMeal.SetMealCalsFile(inFloat); //set cals
 
@@ -182,22 +183,22 @@ void MacroLogger::ReadDaysFile(string file)
 		while (!inFile.eof())
 		{
 			Days tempDay; //temp obj
-			getline(inFile, inString); //get day date, keep string
+			inFile >> inString; //get day date, keep string
 			tempDay.SetDateFile(inString); //set day date 
 
-			getline(inFile, inString); //get protein grams
+			inFile >> inString; //get protein grams
 			inFloat = stof(inString); //change proteins
 			tempDay.SetProteinTotal(inFloat); //set protein total for day
 
-			getline(inFile, inString); //get fats grams
+			inFile >> inString; //get fats grams
 			inFloat = stof(inString); //change fats
 			tempDay.SetFatTotal(inFloat); //set fats
 
-			getline(inFile, inString); //get carbs grams
+			inFile >> inString; //get carbs grams
 			inFloat = stof(inString); //change carbs
 			tempDay.SetCarbTotal(inFloat); //set carbs
 
-			getline(inFile, inString); //get meal cals
+			inFile >> inString; //get meal cals
 			inFloat = stof(inString); //change cals
 			tempDay.SetCalsTotal(inFloat); //set cals
 
@@ -205,6 +206,38 @@ void MacroLogger::ReadDaysFile(string file)
 		}
 	}
 	inFile.close(); //close file after done
+}
+
+void MacroLogger::ShowMeals()
+{
+	if (mealLog.empty())
+	{
+		cout << "\nYou have not logged a meal yet. Go to the main menu to log one!\n\n";
+	}
+	else
+	{
+		cout << "\nYour meals for the day:\n\n";
+		for (int i = 0; i < mealLog.size(); i++)
+		{
+			cout << mealLog[i].GetMealNum() << "\n" << mealLog[i].GetProteins() << "\n" << mealLog[i].GetFats() << "\n" << mealLog[i].GetCarbs() << "\n" << mealLog[i].GetMealCals() << "\n\n";
+		}
+	}
+}
+
+void MacroLogger::ShowDays()
+{
+	if (dayLog.empty())
+	{
+		cout << "\nYou have not logged a day yet. Go to the main menu to log one when you have finished logging your last meal for the day!\n\n";
+	}
+	else
+	{
+		cout << "\nYour logged days:\n\n";
+		for (int i = 0; i < dayLog.size(); i++)
+		{
+			cout << dayLog[i].GetDate() << "\n" << dayLog[i].GetProteinTotal() << "\n" << dayLog[i].GetFatTotal() << "\n" << dayLog[i].GetCarbTotal() << "\n" << dayLog[i].GetTotalCals() << "\n\n";
+		}
+	}
 }
 
 vector<Meal> MacroLogger::GetMeals()

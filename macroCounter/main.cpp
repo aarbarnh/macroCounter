@@ -11,6 +11,7 @@ using namespace std;
 void StartScreen();
 bool SetGoals(); //set day/meal goals into logger, then ask to save
 bool LogMeal(); //push meal to log (save)
+bool LogDaily(); //log daily counts, calculate totals then push to dayLog, then save to file
 bool ShowMealLog(); //show meals in log
 bool ShowDayLog(); //show days in log
 bool QuitVerif(); //quitting or back to main menu
@@ -71,11 +72,13 @@ void StartScreen() //description and title, also menu options
 				mainMenu = LogMeal(); //return bool for main, log meal to vector then save to file
 				break;
 			case 3: //log daily
-				//mainMenu = false; make function bool, still need to affect mainMenu bool
+				//mainMenu = LogDaily(); //return bool to main
 				break;
 			case 4: //see meals
+				mainMenu = ShowMealLog(); //show meals in vector
 				break;
 			case 5: //see daily
+				mainMenu = ShowDayLog(); //show days in vector
 				break; 
 			case 6: //quit option
 				mainMenu = false;
@@ -233,7 +236,6 @@ bool LogMeal()
 {
 	//variables for logging, string is for stoi/stof
 	string userInput;
-	int mealNum;
 	float macroEntry;
 	Meal tempMeal;
 
@@ -299,5 +301,28 @@ bool LogMeal()
 	logger.SaveMealsFile("meals.txt");
 
 	returnBool = QuitVerif();
+	return returnBool;
+}
+
+bool LogDaily()
+{
+	return false; //stand in so no errors
+} //todo:implement later, doing shows first
+
+bool ShowMealLog()
+{
+	bool returnBool; //for main menu
+	logger.ShowMeals(); 
+	returnBool = QuitVerif();
+
+	return returnBool;
+}
+
+bool ShowDayLog()
+{
+	bool returnBool; //for main menu
+	logger.ShowDays();
+	returnBool = QuitVerif();
+
 	return returnBool;
 }

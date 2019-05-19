@@ -23,6 +23,8 @@ public:
 	void ReadGoals(string file); //read from file to set goals 
 	void PushBackMeal(Meal meal); //push meal to meal log
 	void PushBackDays(Days day); //push day to day log
+	void ShowMeals(); //cout meal vector
+	void ShowDays(); //cout days vector
 	vector<Meal> GetMeals();
 	vector<Days> GetDays();
 	~MacroLogger();
