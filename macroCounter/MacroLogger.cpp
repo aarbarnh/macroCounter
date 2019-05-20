@@ -83,9 +83,11 @@ void MacroLogger::SaveGoals(string file)
 
 void MacroLogger::SaveDaysFile(string file)
 {
+	int nDays = dayLog.size(); //get a number for days in dayLog for reading 
 	ofstream outFile(file); //append to file not write over
 	if (outFile.is_open())
 	{
+		outFile << nDays << "\n"; //put number of days at top, will be tested in reading
 		for (int i = 0; i < dayLog.size(); i++)
 		{
 			outFile << dayLog[i].GetDate() << "\n"; //write date in
@@ -226,7 +228,7 @@ void MacroLogger::ShowMeals()
 {
 	if (mealLog.empty())
 	{
-		cout << "\nYou have not logged a meal yet. Go to the main menu to log one!\n\n";
+		cout << "\nYou have not logged a meal yet. Go to the main menu to log one!\n";
 	}
 	else
 	{
@@ -242,7 +244,7 @@ void MacroLogger::ShowDays()
 {
 	if (dayLog.empty())
 	{
-		cout << "\nYou have not logged a day yet. Go to the main menu to log one when you have finished logging your last meal for the day!\n\n";
+		cout << "\nYou have not logged a day yet. Go to the main menu to log one when you have finished logging your last meal for the day!\n";
 	}
 	else
 	{
@@ -252,6 +254,19 @@ void MacroLogger::ShowDays()
 			cout << dayLog[i].GetDate() << "\n" << dayLog[i].GetProteinTotal() << "\n" << dayLog[i].GetFatTotal() << "\n" << dayLog[i].GetCarbTotal() << "\n" << dayLog[i].GetTotalCals() << "\n\n";
 		}
 	}
+}
+
+void MacroLogger::ResetMealsFile(string file)
+{
+	int resetVar = 0; //put a zero into meal file once meals logged to days
+	ofstream outFile(file); //append to file just one line, delete rest
+	outFile << resetVar; //put zero as first and only line
+	outFile.close(); 
+}
+
+void MacroLogger::ResetMealLog()
+{
+	mealLog.clear();
 }
 
 vector<Meal> MacroLogger::GetMeals()

@@ -21,6 +21,8 @@ public:
 	void ReadDaysFile(string file); //read from file to fill vector days
 	void SaveGoals(string file); //save goals to file
 	void ReadGoals(string file); //read from file to set goals 
+	void ResetMealsFile(string file); //take out everything once pushed to days then put 0 inside meal
+	void ResetMealLog(); // .clear() for vector
 	void PushBackMeal(Meal meal); //push meal to meal log
 	void PushBackDays(Days day); //push day to day log
 	void ShowMeals(); //cout meal vector

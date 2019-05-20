@@ -70,19 +70,24 @@ void StartScreen() //description and title, also menu options
 				break;
 			case 2: //log meal
 				mainMenu = LogMeal(); //return bool for main, log meal to vector then save to file
+				system("cls");
 				break;
 			case 3: //log daily
 				mainMenu = LogDaily(); //return bool to main
+				system("cls");
 				break;
 			case 4: //see meals
 				mainMenu = ShowMealLog(); //show meals in vector
+				system("cls");
 				break;
 			case 5: //see daily
 				mainMenu = ShowDayLog(); //show days in vector
+				system("cls");
 				break; 
 			case 6: //quit option
 				mainMenu = false;
 				programOn = false;
+				system("cls");
 				break;
 			}
 		}
@@ -96,7 +101,6 @@ void StartScreen() //description and title, also menu options
 		}
 	}
 	system("pause");
-	system("cls");
 }
 
 bool QuitVerif()
@@ -317,27 +321,29 @@ bool LogDaily()
 		cin >> logDayVerif;
 		if (logDayVerif == 'Y' || logDayVerif == 'y')
 		{
-			cout << "\n\nLogging your daily macros...\n\n";
+			cout << "\nLogging your daily macros...\n\n";
 			tempDay.SetDate(); //set the date of the day being logged
 			tempDay.SetPFCTotals(logger.GetMeals()); //get p f and c for day, passing in logger vector
 			tempDay.SetCals(); //set cals for the day
 			logger.PushBackDays(tempDay); //push to days vector in logger
 			logger.SaveDaysFile("days.txt"); //save the days to file
-			cout << "Daily macros logged successfully!\n\n";
+			cout << "\nDaily macros logged successfully!\n";
+			logger.ResetMealLog(); //make sure meal log is empty now
+			logger.ResetMealsFile("meals.txt"); //reset file to have just 0 for # of meals
 			returnBool = QuitVerif();
 			logValid = true;
 			return returnBool; //stay in main menu or not
 		}
 		else if (logDayVerif == 'N' || logDayVerif == 'n')
 		{
-			cout << "\n\nYour daily macros will not be logged yet\n\n";
+			cout << "\nYour daily macros will not be logged yet\n";
 			returnBool = QuitVerif();
 			logValid = true;
 			return returnBool;
 		}
 		else
 		{
-			cout << "\n\nYou can only enter 'y' or 'n'. Please try again.\n";
+			cout << "\nYou can only enter 'y' or 'n'. Please try again.\n";
 		}
 	}
 

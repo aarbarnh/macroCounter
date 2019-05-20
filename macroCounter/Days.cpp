@@ -25,9 +25,9 @@ void Days::SetPFCTotals(vector<Meal> mLog)
 {
 	for (int i = 0; i < mLog.size(); i++) //grab the PFC from each meal entry
 	{
-		proteinTotal = mLog[i].GetProteins();
-		carbTotal = mLog[i].GetCarbs();
-		fatTotal = mLog[i].GetFats();
+		proteinTotal += mLog[i].GetProteins();
+		carbTotal += mLog[i].GetCarbs();
+		fatTotal += mLog[i].GetFats();
 	}
 }
 //set protein total, file i/o

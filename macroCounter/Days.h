@@ -30,9 +30,9 @@ public:
 	~Days();
 private:
 	string dDate;
-	float proteinTotal;
-	float carbTotal;
-	float fatTotal;
+	float proteinTotal = 0;
+	float carbTotal = 0;
+	float fatTotal = 0;
 	float proteinCals;
 	float fatCals;
 	float carbCals;
