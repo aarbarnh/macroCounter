@@ -106,7 +106,7 @@ bool QuitVerif()
 	{
 		char userValidate;
 
-		cout << "Would you like to exit the program? If you do enter 'y'. If you do not, and just want to return to the main menu, enter 'n'.\nChoice: ";
+		cout << "\nWould you like to exit the program? If you do enter 'y'. If you do not, and just want to return to the main menu, enter 'n'.\nChoice: ";
 		cin >> userValidate; //get y/n for quitting
 		if (userValidate == 'y' || userValidate == 'Y')
 		{

@@ -49,9 +49,11 @@ void MacroLogger::PushBackDays(Days day)
 
 void MacroLogger::SaveMealsFile(string file)
 {
+	int nMeals = mealLog.size(); //get a number of meals in mealLog
 	ofstream outFile(file); //append to file, not write over
 	if (outFile.is_open())
 	{
+		outFile << nMeals << "\n"; //put number of meals at top, used for reading later
 		for (int i = 0; i < mealLog.size(); i++)
 		{
 			outFile << mealLog[i].GetMealNum() << "\n"; //write in meal number
@@ -138,34 +140,40 @@ void MacroLogger::ReadMealsFile(string file)
 	string inString;
 	float inFloat;
 	int inInt; //for meal num only
+	int nMeals;
 
 	ifstream inFile(file);
 	if (inFile.is_open())
 	{
-		while (!inFile.eof())
+		inFile >> inString; //get the number of meals first for for loop
+		nMeals = stoi(inString); //change to int to test
+		if (nMeals > 0)
 		{
-			Meal tempMeal; //temp obj
-			inFile >> inString; //get meal num
-			inInt = stoi(inString); //change string to int
-			tempMeal.SetMealNumFile(inInt); //set meal num to inInt
+			for (int i = 0; i < nMeals; i++)
+			{
+				Meal tempMeal; //temp obj
+				inFile >> inString; //get meal num
+				inInt = stoi(inString); //change string to int
+				tempMeal.SetMealNumFile(inInt); //set meal num to inInt
 
-			inFile >> inString; //get protein grams
-			inFloat = stof(inString); //change proteins
-			tempMeal.SetProteins(inFloat); //set proteins
+				inFile >> inString; //get protein grams
+				inFloat = stof(inString); //change proteins
+				tempMeal.SetProteins(inFloat); //set proteins
 
-			inFile >> inString; //get fats grams
-			inFloat = stof(inString); //change fats
-			tempMeal.SetFats(inFloat); //set fats
+				inFile >> inString; //get fats grams
+				inFloat = stof(inString); //change fats
+				tempMeal.SetFats(inFloat); //set fats
 
-			inFile >> inString; //get carbs grams
-			inFloat = stof(inString); //change carbs
-			tempMeal.SetCarbs(inFloat); //set carbs
+				inFile >> inString; //get carbs grams
+				inFloat = stof(inString); //change carbs
+				tempMeal.SetCarbs(inFloat); //set carbs
 
-			inFile >> inString; //get meal cals
-			inFloat = stof(inString); //change cals
-			tempMeal.SetMealCalsFile(inFloat); //set cals
+				inFile >> inString; //get meal cals
+				inFloat = stof(inString); //change cals
+				tempMeal.SetMealCalsFile(inFloat); //set cals
 
-			mealLog.push_back(tempMeal); //push meal to log
+				mealLog.push_back(tempMeal); //push meal to log
+			}
 		}
 	}
 	inFile.close(); //close file after done
@@ -176,33 +184,39 @@ void MacroLogger::ReadDaysFile(string file)
 {
 	string inString;
 	float inFloat;
+	int nDays;
 
 	ifstream inFile(file);
 	if (inFile.is_open())
 	{
-		while (!inFile.eof())
+		inFile >> inString; //get num of days
+		nDays = stoi(inString); //change to int to test
+		if (nDays > 0)
 		{
-			Days tempDay; //temp obj
-			inFile >> inString; //get day date, keep string
-			tempDay.SetDateFile(inString); //set day date 
+			while (!inFile.eof())
+			{
+				Days tempDay; //temp obj
+				inFile >> inString; //get day date, keep string
+				tempDay.SetDateFile(inString); //set day date 
 
-			inFile >> inString; //get protein grams
-			inFloat = stof(inString); //change proteins
-			tempDay.SetProteinTotal(inFloat); //set protein total for day
+				inFile >> inString; //get protein grams
+				inFloat = stof(inString); //change proteins
+				tempDay.SetProteinTotal(inFloat); //set protein total for day
 
-			inFile >> inString; //get fats grams
-			inFloat = stof(inString); //change fats
-			tempDay.SetFatTotal(inFloat); //set fats
+				inFile >> inString; //get fats grams
+				inFloat = stof(inString); //change fats
+				tempDay.SetFatTotal(inFloat); //set fats
 
-			inFile >> inString; //get carbs grams
-			inFloat = stof(inString); //change carbs
-			tempDay.SetCarbTotal(inFloat); //set carbs
+				inFile >> inString; //get carbs grams
+				inFloat = stof(inString); //change carbs
+				tempDay.SetCarbTotal(inFloat); //set carbs
 
-			inFile >> inString; //get meal cals
-			inFloat = stof(inString); //change cals
-			tempDay.SetCalsTotal(inFloat); //set cals
+				inFile >> inString; //get meal cals
+				inFloat = stof(inString); //change cals
+				tempDay.SetCalsTotal(inFloat); //set cals
 
-			dayLog.push_back(tempDay); //push meal to log
+				dayLog.push_back(tempDay); //push meal to log
+			}
 		}
 	}
 	inFile.close(); //close file after done
