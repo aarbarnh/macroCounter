@@ -9,6 +9,7 @@ class MacroLogger
 {
 public:
 	MacroLogger();
+	void SetMealsPer(int meals); //set the goal meals per day
 	void SetDayProGoal(float protein);
 	void SetDayCarbGoal(float carb);
 	void SetDayFatGoal(float fat);
@@ -27,12 +28,16 @@ public:
 	void PushBackDays(Days day); //push day to day log
 	void ShowMeals(); //cout meal vector
 	void ShowDays(); //cout days vector
+	void ShowGoalsSet(); //show the goals previously set
+	//getters
 	vector<Meal> GetMeals();
 	vector<Days> GetDays();
+	int GetMealsPer(); 
 	~MacroLogger();
 private:
 	vector<Meal> mealLog;
 	vector<Days> dayLog;
+	int goalMealsPer;
 	float goalDayProtein;
 	float goalDayCarbs;
 	float goalDayFats;

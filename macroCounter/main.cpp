@@ -13,6 +13,7 @@ bool SetGoals(); //set day/meal goals into logger, then ask to save
 bool LogMeal(); //push meal to log (save)
 bool LogDaily(); //log daily counts, calculate totals then push to dayLog, then save to file
 bool ShowMealLog(); //show meals in log
+bool ShowGoals(); //shows the goals that the user set
 bool ShowDayLog(); //show days in log
 bool QuitVerif(); //quitting or back to main menu
 
@@ -55,7 +56,7 @@ void StartScreen() //description and title, also menu options
 )"; //put title
 			string menuString;
 			int menuInt;
-			cout << "1. Set Daily Macro Goals\n2. Log Meal Macros\n3. Log Daily Macros\n4. Show logged meals macros\n5. Show logged daily macros\n6. Quit\n\nWhat would you like to do? (Enter the number shown in the menu): ";
+			cout << "1. Set Macro Goals\n2. Show Macro Goals\n3. Log Meal Macros\n4. Log Daily Macros\n5. Show logged meals macros\n6. Show logged daily macros\n7. Quit\n\nWhat would you like to do? (Enter the number shown in the menu): ";
 			cin >> menuString;
 			menuInt = stoi(menuString); //test if string is an int, catch exception
 			if (menuInt < 1 || menuInt > 6) //catch out of range menu number
@@ -68,23 +69,27 @@ void StartScreen() //description and title, also menu options
 				mainMenu = SetGoals(); //make programOn false in function, mainMenu assigned with return
 				system("cls");
 				break;
-			case 2: //log meal
+			case 2: //show the set goals
+				mainMenu = ShowGoals();
+				system("cls");
+				break;
+			case 3: //log meal
 				mainMenu = LogMeal(); //return bool for main, log meal to vector then save to file
 				system("cls");
 				break;
-			case 3: //log daily
+			case 4: //log daily
 				mainMenu = LogDaily(); //return bool to main
 				system("cls");
 				break;
-			case 4: //see meals
+			case 5: //see meals
 				mainMenu = ShowMealLog(); //show meals in vector
 				system("cls");
 				break;
-			case 5: //see daily
+			case 6: //see daily
 				mainMenu = ShowDayLog(); //show days in vector
 				system("cls");
 				break; 
-			case 6: //quit option
+			case 7: //quit option
 				mainMenu = false;
 				programOn = false;
 				system("cls");
@@ -100,7 +105,6 @@ void StartScreen() //description and title, also menu options
 			cout << "\n\nException occured: " << e.what() << "\n\n";
 		}
 	}
-	system("pause");
 }
 
 bool QuitVerif()
@@ -138,6 +142,10 @@ bool SetGoals() //set goals definition
 	bool setBeforeVerif = false;
 	bool makeNewVerif = false;
 	bool returnBool = false; //send back to main menu
+	bool proVerif = false; //keep in try/catch loop
+	bool carbVerif = false;
+	bool fatVerif = false;
+	bool mealVerif = false;
 	
 	char userValidate; //char to hold y/n for all four questions
 	string userInput; //string to hold p,f,c grams; test with stoi
@@ -156,31 +164,73 @@ bool SetGoals() //set goals definition
 				cin >> userValidate;
 				if (userValidate == 'y' || userValidate == 'Y') 
 				{
-					cout << "\nHow many grams of protein do you want to have per day?: "; //protein
-					cin >> userInput;
-					floatGrams = stof(userInput); //stoi test, add exception later REMEMBER!
-					logger.SetDayProGoal(floatGrams); //set goal proteins 
-
-					cout << "\nHow many grams of fats do you want to have per day?: "; //fats
-					cin >> userInput;
-					floatGrams = stof(userInput); //stoi test, EXCEPTION ADD MUST
-					logger.SetDayFatGoal(floatGrams); //set goal fats
-
-					cout << "\nHow many grams of carbohydrates do you want to have per day?: "; //carbs
-					cin >> userInput;
-					floatGrams = stof(userInput); //stoi test, EXCEPTION ADD MUST
-					logger.SetDayCarbGoal(floatGrams);
-					//figure out meal nums to get meal goals
-					cout << "\nHow many meals do you plan to have in the day?\nThis will determine your meal macro goals from the daily macro goals given: ";
-					cin >> userInput;
-					mealNum = stoi(userInput); //stoi test, EXCEPTION ADD MUST
+					while (proVerif == false)
+					{
+						try
+						{
+							cout << "\nHow many grams of protein do you want to have per day?: "; //protein
+							cin >> userInput;
+							floatGrams = stof(userInput); //stoi test
+							logger.SetDayProGoal(floatGrams); //set goal proteins 
+							proVerif = true;
+						}
+						catch (exception & e)
+						{
+							cout << "\nException occured: " << e.what() << "\n";
+						}
+					}
+					while (fatVerif == false)
+					{
+						try
+						{
+							cout << "\nHow many grams of fats do you want to have per day?: "; //fats
+							cin >> userInput;
+							floatGrams = stof(userInput); //stoi test
+							logger.SetDayFatGoal(floatGrams); //set goal fats
+							fatVerif = true;
+						}
+						catch (exception & e)
+						{
+							cout << "\nException occured: " << e.what() << "\n";
+						}
+					}
+					while (carbVerif == false)
+					{
+						try
+						{
+							cout << "\nHow many grams of carbohydrates do you want to have per day?: "; //carbs
+							cin >> userInput;
+							floatGrams = stof(userInput); //stoi test
+							carbVerif = true;
+						}
+						catch (exception & e)
+						{
+							cout << "\nException occured: " << e.what() << "\n";
+						}
+					}
+					while (mealVerif == false)
+					{
+						try
+						{
+							//figure out meal nums to get meal goals
+							cout << "\nHow many meals do you plan to have in the day?\nThis will determine your meal macro goals from the daily macro goals given: ";
+							cin >> userInput;
+							mealNum = stoi(userInput); //stoi test
+							logger.SetMealsPer(mealNum); //set meals per day goal
+							mealVerif = true;
+						}
+						catch (exception & e)
+						{
+							cout << "\nException occured: " << e.what() << "\n";
+						}
+					}
 					//set meal goals
 					logger.SetMealProGoal(mealNum); //can probably make these three into one, change later
 					logger.SetMealFatGoal(mealNum);
 					logger.SetMealCarbGoal(mealNum);
 					//save goals to file
 					logger.SaveGoals("macroGoals.txt"); //saves to file, will make on own if I do not
-					cout << "\nYour daily and meal goals have been set and saved!\n\n";
+					cout << "\nYour daily and meal goals have been set and saved!\n";
 					makeNewVerif = true; //get out of loop
 					setBeforeVerif = true; //get out of outer loop
 				}
@@ -188,48 +238,92 @@ bool SetGoals() //set goals definition
 				{
 					cout << "\nLet's load in your macro goals from before! One moment please...\n\n";
 					logger.ReadGoals("macroGoals.txt"); //read goals from file and set them
-					cout << "Your goals have been loaded in!\n\n";
+					cout << "Your goals have been loaded in!\n";
 					makeNewVerif = true; //get out of loop 
 					setBeforeVerif = true; //get out of outer loop
 				}
 				else
 				{
-					cout << "\nYou can only enter 'y' or 'n'. Remember 'y' means that you want to make new goals, 'n' means you want to load in old goals.\n\n"; 
+					cout << "\nYou can only enter 'y' or 'n'. Remember 'y' means that you want to make new goals, 'n' means you want to load in old goals.\n"; 
 				}
 			}
 		}
 		else if (userValidate == 'n' || userValidate == 'N')
 		{
-			cout << "\nLet's make some brand new macro goals then!\n\nHow many grams of protein do you want to have per day?: "; //protein
-			cin >> userInput;
-			floatGrams = stof(userInput); //stoi test, add exception later REMEMBER!
-			logger.SetDayProGoal(floatGrams); //set goal proteins 
-
-			cout << "\nHow many grams of fats do you want to have per day?: "; //fats
-			cin >> userInput;
-			floatGrams = stof(userInput); //stoi test, EXCEPTION ADD MUST
-			logger.SetDayFatGoal(floatGrams); //set goal fats
-
-			cout << "\nHow many grams of carbohydrates do you want to have per day?: "; //carbs
-			cin >> userInput;
-			floatGrams = stof(userInput); //stoi test, EXCEPTION ADD MUST
-			logger.SetDayCarbGoal(floatGrams);
-			//figure out meal nums to get meal goals
-			cout << "\nHow many meals do you plan to have in the day?\nThis will determine your meal macro goals from the daily macro goals given: ";
-			cin >> userInput;
-			mealNum = stoi(userInput); //stoi test, EXCEPTION ADD MUST
+			cout << "\nLet's make some brand new macro goals then!\n";
+			while (proVerif == false)
+			{
+				try
+				{
+					cout << "\nHow many grams of protein do you want to have per day?: "; //protein
+					cin >> userInput;
+					floatGrams = stof(userInput); //stoi test
+					logger.SetDayProGoal(floatGrams); //set goal proteins 
+					proVerif = true;
+				}
+				catch (exception& e)
+				{
+					cout << "\nException occured: " << e.what() << "\n";
+				}
+			}
+			while (fatVerif == false)
+			{
+				try
+				{
+					cout << "\nHow many grams of fats do you want to have per day?: "; //fats
+					cin >> userInput;
+					floatGrams = stof(userInput); //stoi test
+					logger.SetDayFatGoal(floatGrams); //set goal fats
+					fatVerif = true;
+				}
+				catch (exception& e)
+				{
+					cout << "\nException occured: " << e.what() << "\n";
+				}
+			}
+			while (carbVerif == false)
+			{
+				try
+				{
+					cout << "\nHow many grams of carbohydrates do you want to have per day?: "; //carbs
+					cin >> userInput;
+					floatGrams = stof(userInput); //stoi test
+					logger.SetDayCarbGoal(floatGrams);
+					carbVerif = true;
+				}
+				catch (exception& e)
+				{
+					cout << "\nException occured: " << e.what() << "\n";
+				}
+			}
+			while (mealVerif == false)
+			{
+				try
+				{
+					//figure out meal nums to get meal goals
+					cout << "\nHow many meals do you plan to have in the day?\nThis will determine your meal macro goals from the daily macro goals given: ";
+					cin >> userInput;
+					mealNum = stoi(userInput); //stoi test
+					logger.SetMealsPer(mealNum); //set meals per day goal
+					mealVerif = true;
+				}
+				catch (exception& e)
+				{
+					cout << "\nException occured: " << e.what() << "\n";
+				}
+			}
 			//set meal goals
 			logger.SetMealProGoal(mealNum); //can probably make these three into one, change later
 			logger.SetMealFatGoal(mealNum);
 			logger.SetMealCarbGoal(mealNum);
 			//save goals to file
 			logger.SaveGoals("macroGoals.txt"); //saves to file, will make on own if I do not
-			cout << "\nYour daily and meal goals have been set and saved!\n\n";
+			cout << "\nYour daily and meal goals have been set and saved!\n";
 			setBeforeVerif = true; //get out of outer loop
 		}
 		else
 		{
-			cout << "\nYou can only enter 'y' or 'n'. Remember 'y' means that you have made macro goals before, 'n' means that you have not.\n\n";
+			cout << "\nYou can only enter 'y' or 'n'. Remember 'y' means that you have made macro goals before, 'n' means that you have not.\n";
 		}
 	}
 	returnBool = QuitVerif();
@@ -240,6 +334,7 @@ bool LogMeal()
 {
 	//variables for logging, string is for stoi/stof
 	string userInput;
+	char logMoreMeals;
 	float macroEntry;
 	Meal tempMeal;
 
@@ -248,6 +343,7 @@ bool LogMeal()
 	bool carbValid = false;
 	bool fatValid = false;
 	bool returnBool = false;
+	bool logAnother = true;
 
 	//set meal num
 	tempMeal.SetMeal();
@@ -265,7 +361,7 @@ bool LogMeal()
 		}
 		catch (exception & e)
 		{
-			cout << "\n\nException occured: " << e.what() << "\n\n";
+			cout << "\nException occured: " << e.what() << "\n";
 		}
 	}
 	//get meal fats
@@ -281,7 +377,7 @@ bool LogMeal()
 		}
 		catch (exception & e)
 		{
-			cout << "\n\nException occured: " << e.what() << "\n\n";
+			cout << "\nException occured: " << e.what() << "\n";
 		}
 	}
 	//get meal carbs
@@ -297,7 +393,7 @@ bool LogMeal()
 		}
 		catch (exception & e)
 		{
-			cout << "\n\nException occured: " << e.what() << "\n\n";
+			cout << "\nException occured: " << e.what() << "\n";
 		}
 	}
 	tempMeal.SetMealCals(); //set cals
@@ -362,6 +458,15 @@ bool ShowDayLog()
 {
 	bool returnBool; //for main menu
 	logger.ShowDays();
+	returnBool = QuitVerif();
+
+	return returnBool;
+}
+
+bool ShowGoals()
+{
+	bool returnBool; //for main menu
+	logger.ShowGoalsSet();
 	returnBool = QuitVerif();
 
 	return returnBool;

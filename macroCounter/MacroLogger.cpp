@@ -12,6 +12,11 @@ void MacroLogger::SetDayProGoal(float protein)
 	goalDayProtein = protein;
 }
 
+void MacroLogger::SetMealsPer(int meals)
+{
+	goalMealsPer = meals;
+}
+
 void MacroLogger::SetDayCarbGoal(float carb)
 {
 	goalDayCarbs = carb;
@@ -71,6 +76,7 @@ void MacroLogger::SaveGoals(string file)
 	ofstream outFile(file);
 	if (outFile.is_open())
 	{ //write in the goals for the meals
+		outFile << goalMealsPer << "\n";
 		outFile << goalMealProtein << "\n";
 		outFile << goalMealFats << "\n";
 		outFile << goalMealCarbs << "\n";
@@ -104,33 +110,43 @@ void MacroLogger::ReadGoals(string file)
 {
 	string inString;
 	float inFloat; //testing purpose
+	int inInt;
+	int mealGoals; //test if goals are in file
 
 	ifstream inFile(file);
 	if (inFile.is_open())
 	{
-		inFile >> inString; //get meal goal proteins
-		inFloat = stof(inString); //convert
-		goalMealProtein = inFloat; //set meal proteins
+		inFile >> inString; //get test value
+		mealGoals = stoi(inString); //convert
 
-		inFile >> inString; //get meal goal fats
-		inFloat = stof(inString); //convert
-		goalMealFats = inFloat; //set
+		if (mealGoals > 0)
+		{
+			goalMealsPer = mealGoals; //set meal goals with the value grabbed to test
 
-		inFile >> inString; //get meal goal carbs
-		inFloat = stof(inString); //convert
-		goalMealCarbs = inFloat; //set
+			inFile >> inString; //get meal goal proteins
+			inFloat = stof(inString); //convert
+			goalMealProtein = inFloat; //set meal proteins
 
-		inFile >> inString; //get day goal proteins
-		inFloat = stof(inString); //convert
-		goalDayProtein = inFloat; //set meal proteins
+			inFile >> inString; //get meal goal fats
+			inFloat = stof(inString); //convert
+			goalMealFats = inFloat; //set
 
-		inFile >> inString; //get day goal fats
-		inFloat = stof(inString); //convert
-		goalDayFats = inFloat; //set
+			inFile >> inString; //get meal goal carbs
+			inFloat = stof(inString); //convert
+			goalMealCarbs = inFloat; //set
 
-		inFile >> inString; //get day goal carbs
-		inFloat = stof(inString); //convert
-		goalDayCarbs = inFloat; //set
+			inFile >> inString; //get day goal proteins
+			inFloat = stof(inString); //convert
+			goalDayProtein = inFloat; //set meal proteins
+
+			inFile >> inString; //get day goal fats
+			inFloat = stof(inString); //convert
+			goalDayFats = inFloat; //set
+
+			inFile >> inString; //get day goal carbs
+			inFloat = stof(inString); //convert
+			goalDayCarbs = inFloat; //set
+		}
 
 
 	}
@@ -256,6 +272,14 @@ void MacroLogger::ShowDays()
 	}
 }
 
+void MacroLogger::ShowGoalsSet()
+{
+	cout << "\nYour daily macro goals:\n\n";
+	cout << "Proteins: " << goalDayProtein << "\n" << "Fats: " << goalDayFats << "\n" << "Carbohydrates: " << goalDayCarbs << "\n\n";
+	cout << "Your macros per meal (with " << goalMealsPer << " being your goal meals per day):\n\n";
+	cout << "Proteins: " << goalMealProtein << "\n" << "Fats: " << goalMealFats << "\n" << "Carbohydrates: " << goalMealCarbs << "\n\n";
+}
+
 void MacroLogger::ResetMealsFile(string file)
 {
 	int resetVar = 0; //put a zero into meal file once meals logged to days
@@ -277,6 +301,11 @@ vector<Meal> MacroLogger::GetMeals()
 vector<Days> MacroLogger::GetDays()
 {
 	return dayLog;
+}
+
+int MacroLogger::GetMealsPer()
+{
+	return goalMealsPer;
 }
 
 MacroLogger::~MacroLogger()
